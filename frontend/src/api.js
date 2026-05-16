@@ -1,5 +1,5 @@
 import { fetchAuthSession } from "aws-amplify/auth";
-import { API_BASE } from "../aws-exports";
+import { API_BASE } from "./aws-exports";
 
 async function getToken() {
   try {
