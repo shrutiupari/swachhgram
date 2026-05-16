@@ -1,0 +1,14 @@
+# Ignore node modules
+/frontend/node_modules/
+/backend/node_modules/
+
+# Local env files
+/backend/.env.local
+/.env.local
+
+# Local auth config
+/frontend/src/authConfig.js
+
+# Logs
+*.log
+npm-debug.log*
