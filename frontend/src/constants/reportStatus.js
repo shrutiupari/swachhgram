@@ -1,0 +1,7 @@
+export const REPORT_STATUSES = [
+  "PENDING",
+  "ASSIGNED",
+  "IN_PROGRESS",
+  "RESOLVED",
+  "REJECTED",
+];
