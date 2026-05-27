@@ -76,4 +76,20 @@ export const api = {
       }),
     getUsers: () => apiFetch("/admin/users"),
   },
+
+  uploadLocalImage: async (file) => {
+    const formData = new FormData();
+    formData.append("image", file);
+
+    const res = await fetch("/api/local-upload", {
+      method: "POST",
+      body: formData,
+    });
+
+    if(!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.error || `HTTP ${res.status}`);
+    }
+    return res.json();
+  }
 };

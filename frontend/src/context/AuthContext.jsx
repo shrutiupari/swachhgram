@@ -21,6 +21,13 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
 
   const loadUser = async () => {
+    if(isLocalAuth) {
+      setUser(localUser);
+      setAttributes(localAttributes);
+      setLoading(false);
+      return;
+    }
+
     try {
       const u = await getCurrentUser();
       const attrs = await fetchUserAttributes();
@@ -41,7 +48,9 @@ export function AuthProvider({ children }) {
   const name  = attributes?.name || user?.username || "";
 
   const logout = async () => {
-    await signOut();
+    if(!isLocalAuth) {
+      await signOut();
+    }
     setUser(null);
     setAttributes(null);
   };
