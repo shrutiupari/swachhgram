@@ -23,7 +23,7 @@ All services are within **AWS Free Tier**.
 
 ## Project Structure
 ```
-swachhgram/
+project-root/
 ├── backend/
 │   ├── template.yaml         # AWS SAM template
 │   ├── package.json

@@ -2,6 +2,7 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 import { getCurrentUser, fetchUserAttributes, signOut } from "aws-amplify/auth";
 
 const AuthContext = createContext(null);
+const isLocalAuth = import.meta.env.VITE_AUTH_MODE === "local";
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);

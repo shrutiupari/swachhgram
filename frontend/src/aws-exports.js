@@ -15,6 +15,7 @@ const awsConfig = {
 };
 
 // API Gateway base URL (from sam deploy output)
-export const API_BASE = "https://XXXXXXXXXX.execute-api.ap-south-1.amazonaws.com/Prod";
+//export const API_BASE = "https://XXXXXXXXXX.execute-api.ap-south-1.amazonaws.com/Prod";
+export const API_BASE = import.meta.env.VITE_API_BASE || "http://localhost:4000";
 
 export default awsConfig;
