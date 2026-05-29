@@ -1,0 +1,19 @@
+[
+  {
+    "reportId": "3bbfc769-44ad-4a3b-92f9-2434ca9a2285",
+    "createdAt": "2026-05-29T16:50:09.018Z",
+    "userId": "local-user-1",
+    "reporterName": "Local Citizen",
+    "reporterEmail": "citizen@example.com",
+    "status": "PENDING",
+    "updatedAt": "2026-05-29T16:50:09.018Z",
+    "photoKey": "http://localhost:4000/uploads/1780073377119-5d498717-cc09-4078-8ed8-0a45185b2183.jpg",
+    "photoUrl": "{import.meta.env.VITE_API_BASE || \"\"}http://localhost:4000/uploads/1780073377119-5d498717-cc09-4078-8ed8-0a45185b2183.jpg",
+    "description": "",
+    "address": "Gokul Nagar Mutaga",
+    "latitude": null,
+    "longitude": null,
+    "ward": "",
+    "village": "Belagavi"
+  }
+]
