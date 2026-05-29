@@ -56,16 +56,23 @@ export default function ReportGarbage() {
     if (!file) return;
     setUploading(true); setError("");
     try {
-      // 1. Get pre-signed URL
-      const { url, key } = await api.getUploadUrl(file.name, file.type);
-      // 2. Upload to S3
-      await api.uploadToS3(url, file);
-      setUploadedKey(key);
-      // 3. Analyze with Rekognition
+      const uploaded = await api.uploadLocalImage(file);
+      setUploadedKey(uploaded.url);
       setAnalyzing(true);
-      const result = await api.analyzeImage(key);
+
+      const result = await api.analyzeImage(uploaded.url);  
       setAiResult(result);
       setStep(1);
+      // // 1. Get pre-signed URL
+      // const { url, key } = await api.getUploadUrl(file.name, file.type);
+      // // 2. Upload to S3
+      // await api.uploadToS3(url, file);
+      // setUploadedKey(key);
+      // // 3. Analyze with Rekognition
+      // setAnalyzing(true);
+      // const result = await api.analyzeImage(key);
+      // setAiResult(result);
+      // setStep(1);
     } catch (err) {
       setError(err.message || "Upload failed. Please try again.");
     } finally {
@@ -93,6 +100,7 @@ export default function ReportGarbage() {
     try {
       await api.createReport({
         photoKey:    uploadedKey,
+        photoUrl:    `{import.meta.env.VITE_API_BASE || ""}${uploadedKey}`,
         description,
         address:     location.address,
         latitude:    location.lat,

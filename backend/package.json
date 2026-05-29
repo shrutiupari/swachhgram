@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "SwachhGram backend Lambda functions",
   "main": "src/handlers/reports.js",
+  "dev": "node local-server.js",
   "scripts": {
     "build": "sam build",
     "deploy": "sam deploy --guided",
@@ -16,6 +17,10 @@
     "@aws-sdk/client-sns": "^3.0.0",
     "@aws-sdk/lib-dynamodb": "^3.0.0",
     "@aws-sdk/s3-request-presigner": "^3.0.0",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "multer": "^2.1.1",
     "uuid": "^9.0.0"
   }
 }

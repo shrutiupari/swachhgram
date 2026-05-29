@@ -4,12 +4,30 @@ import { getCurrentUser, fetchUserAttributes, signOut } from "aws-amplify/auth";
 const AuthContext = createContext(null);
 const isLocalAuth = import.meta.env.VITE_AUTH_MODE === "local";
 
+const localUser = {
+  username: "local-citizen",
+  userId: "local-user-1",
+};
+
+const localAttributes = {
+  email: "citizen@example.com",
+  name: "Local Citizen",
+  "custom:role": localStorage.getItem("role") || "citizen",
+};
+
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [attributes, setAttributes] = useState(null);
   const [loading, setLoading] = useState(true);
 
   const loadUser = async () => {
+    if(isLocalAuth) {
+      setUser(localUser);
+      setAttributes(localAttributes);
+      setLoading(false);
+      return;
+    }
+
     try {
       const u = await getCurrentUser();
       const attrs = await fetchUserAttributes();
@@ -30,7 +48,9 @@ export function AuthProvider({ children }) {
   const name  = attributes?.name || user?.username || "";
 
   const logout = async () => {
-    await signOut();
+    if(!isLocalAuth) {
+      await signOut();
+    }
     setUser(null);
     setAttributes(null);
   };
