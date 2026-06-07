@@ -8,7 +8,8 @@ A full-stack civic application where citizens can upload photos of garbage, AI a
 ## Tech Stack
 | Layer | Technology |
 |-------|-----------|
-| Frontend | React 18, Vite, Tailwind CSS, Leaflet.js |
+| React Frontend | React 18, Vite, Tailwind CSS, Leaflet.js |
+| Vue Frontend | Vue 3, Vite |
 | Backend | Node.js, AWS Lambda, API Gateway |
 | Database | AWS DynamoDB |
 | Storage | AWS S3 |
@@ -26,7 +27,9 @@ All services are within **AWS Free Tier**.
 project-root/
 ├── backend/
 │   ├── template.yaml         # AWS SAM template
+│   ├── local-server.js       # Local Express API for Windows/dev practice
 │   ├── package.json
+│   ├── data/                 # Local JSON data for dev mode
 │   └── src/
 │       ├── handlers/
 │       │   ├── reports.js    # CRUD for garbage reports
@@ -36,25 +39,85 @@ project-root/
 │           ├── s3.js         # S3 upload helper
 │           ├── rekognition.js# AI garbage detection
 │           └── notifications.js # SES + SNS alerts
-└── frontend/
+├── frontend-react/
+│   ├── src/
+│   │   ├── App.jsx
+│   │   ├── aws-exports.js    # ← Fill your AWS config here
+│   │   ├── context/AuthContext.jsx
+│   │   ├── pages/
+│   │   │   ├── Login.jsx
+│   │   │   ├── Register.jsx
+│   │   │   ├── CitizenDashboard.jsx
+│   │   │   ├── ReportGarbage.jsx
+│   │   │   ├── MyReports.jsx
+│   │   │   ├── GPDashboard.jsx
+│   │   │   └── AdminDashboard.jsx
+│   │   └── components/
+│   │       ├── Navbar.jsx
+│   │       ├── ReportCard.jsx
+│   │       ├── StatusBadge.jsx
+│   │       └── MapView.jsx
+│   └── package.json
+└── frontend-vue/
     ├── src/
-    │   ├── App.jsx
-    │   ├── aws-exports.js    # ← Fill your AWS config here
-    │   ├── context/AuthContext.jsx
-    │   ├── pages/
-    │   │   ├── Login.jsx
-    │   │   ├── Register.jsx
-    │   │   ├── CitizenDashboard.jsx
-    │   │   ├── ReportGarbage.jsx
-    │   │   ├── MyReports.jsx
-    │   │   ├── GPDashboard.jsx
-    │   │   └── AdminDashboard.jsx
-    │   └── components/
-    │       ├── Navbar.jsx
-    │       ├── ReportCard.jsx
-    │       ├── StatusBadge.jsx
-    │       └── MapView.jsx
+    │   ├── App.vue           # Vue citizen + GP staff local workflow
+    │   ├── api.js
+    │   ├── main.js
+    │   └── styles.css
     └── package.json
+```
+
+---
+
+## Local Development
+
+The project can run locally without AWS. Use the Express server in `backend/`
+and choose either the React or Vue frontend.
+
+### Backend API
+```bash
+cd backend
+npm install
+npm run dev
+```
+
+Local API:
+```text
+http://localhost:4000
+```
+
+### React Frontend
+```bash
+cd frontend-react
+npm install
+copy .env.example .env.local
+npm run dev
+```
+
+React app:
+```text
+http://localhost:3000
+```
+
+### Vue Frontend
+```bash
+cd frontend-vue
+npm install
+copy .env.example .env.local
+npm run dev
+```
+
+Vue app:
+```text
+http://localhost:3001
+```
+
+Both frontends use the same local backend flow:
+```text
+Citizen uploads one garbage photo + address
+GP staff reviews report
+GP staff updates status
+Citizen/queue sees latest status
 ```
 
 ---
@@ -109,13 +172,21 @@ sam deploy --guided
 2. Verify your GP's email address
 3. Note the sender email
 
-### Step 6 — Frontend Setup
+### Step 6 — React Frontend Setup
 ```bash
-cd frontend
+cd frontend-react
 npm install
 # Edit src/aws-exports.js with your values
 npm run dev        # local dev
 npm run build      # production build
+```
+
+### Optional — Vue Frontend Setup
+```bash
+cd frontend-vue
+npm install
+npm run dev
+npm run build
 ```
 
 ### Step 7 — Deploy Frontend to Amplify

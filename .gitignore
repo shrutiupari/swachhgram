@@ -1,13 +1,22 @@
 # Ignore node modules
-/frontend/node_modules/
+/frontend-react/node_modules/
+/frontend-vue/node_modules/
 /backend/node_modules/
+/frontend-react/dist/
+/frontend-vue/dist/
+/backend/.aws-sam/
+/backend/uploads/
 
 # Local env files
 /backend/.env.local
+/frontend-react/.env.local
+/frontend-vue/.env.local
+/**/.env.local
 /.env.local
 
 # Local auth config
-/frontend/src/authConfig.js
+/frontend-react/src/authConfig.js
+/frontend-vue/src/authConfig.js
 
 # Logs
 *.log

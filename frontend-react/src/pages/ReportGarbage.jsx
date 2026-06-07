@@ -33,6 +33,7 @@ export default function ReportGarbage() {
   const [file,         setFile]         = useState(null);
   const [preview,      setPreview]      = useState(null);
   const [uploadedKey,  setUploadedKey]  = useState(null);
+  const [uploadedUrl,  setUploadedUrl]  = useState(null);
   const [aiResult,     setAiResult]     = useState(null);
   const [analyzing,    setAnalyzing]    = useState(false);
   const [uploading,    setUploading]    = useState(false);
@@ -49,6 +50,9 @@ export default function ReportGarbage() {
     if (!f.type.startsWith("image/")) { setError("Please select an image file."); return; }
     setFile(f);
     setPreview(URL.createObjectURL(f));
+    setUploadedKey(null);
+    setUploadedUrl(null);
+    setAiResult(null);
     setError("");
   };
 
@@ -57,22 +61,13 @@ export default function ReportGarbage() {
     setUploading(true); setError("");
     try {
       const uploaded = await api.uploadLocalImage(file);
-      setUploadedKey(uploaded.url);
+      setUploadedKey(uploaded.key);
+      setUploadedUrl(uploaded.url);
       setAnalyzing(true);
 
-      const result = await api.analyzeImage(uploaded.url);  
+      const result = await api.analyzeImage(uploaded.key);
       setAiResult(result);
       setStep(1);
-      // // 1. Get pre-signed URL
-      // const { url, key } = await api.getUploadUrl(file.name, file.type);
-      // // 2. Upload to S3
-      // await api.uploadToS3(url, file);
-      // setUploadedKey(key);
-      // // 3. Analyze with Rekognition
-      // setAnalyzing(true);
-      // const result = await api.analyzeImage(key);
-      // setAiResult(result);
-      // setStep(1);
     } catch (err) {
       setError(err.message || "Upload failed. Please try again.");
     } finally {
@@ -100,13 +95,17 @@ export default function ReportGarbage() {
     try {
       await api.createReport({
         photoKey:    uploadedKey,
-        photoUrl:    `{import.meta.env.VITE_API_BASE || ""}${uploadedKey}`,
+        photoUrl:    uploadedUrl,
         description,
         address:     location.address,
         latitude:    location.lat,
         longitude:   location.lng,
         ward:        location.ward,
         village:     location.village,
+        severity:    aiResult?.severity || "MEDIUM",
+        isGarbage:   aiResult?.isGarbage ?? true,
+        aiConfidence:aiResult?.confidence || 0,
+        aiLabels:    aiResult?.detectedLabels || [],
       });
       navigate("/my-reports");
     } catch (err) {

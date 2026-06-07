@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "description": "SwachhGram backend Lambda functions",
   "main": "src/handlers/reports.js",
-  "dev": "node local-server.js",
   "scripts": {
+    "dev": "node local-server.js",
     "build": "sam build",
     "deploy": "sam deploy --guided",
     "local": "sam local start-api --port 4000"

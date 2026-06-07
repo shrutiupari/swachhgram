@@ -81,7 +81,7 @@ export const api = {
     const formData = new FormData();
     formData.append("image", file);
 
-    const res = await fetch("/api/local-upload", {
+    const res = await fetch(`${API_BASE}/local-upload`, {
       method: "POST",
       body: formData,
     });
@@ -91,5 +91,5 @@ export const api = {
       throw new Error(err.error || `HTTP ${res.status}`);
     }
     return res.json();
-  }
+  },
 };
